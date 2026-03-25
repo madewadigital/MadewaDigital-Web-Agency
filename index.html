@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth bg-[#030303] overflow-x-hidden">
+<html lang="id" class="scroll-smooth bg-[#030303]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -29,10 +29,12 @@
     </script>
 
     <style>
-        /* 1. Core Resets & Anti-Overflow */
+        /* 1. Core Resets & Anti-Overflow (DIJAMIN BISA SCROLL SAMPAI BAWAH) */
         ::selection { background: #00ffff; color: #000; }
-        /* PERBAIKAN 2: max-width 100vw dan overflow-x hidden ketat untuk basmi celah hitam di HP */
-        html, body { background-color: #030303; color: #ffffff; margin: 0; padding: 0; overflow-x: hidden; max-width: 100vw; position: relative; }
+        body { 
+            background-color: #030303; color: #ffffff; margin: 0; padding: 0; 
+            overflow-x: hidden; width: 100%; position: relative; min-height: 100vh;
+        }
         
         /* 2. Fail-Safe Reveal Animation */
         .reveal-element { opacity: 1; transform: translateY(0); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -49,10 +51,9 @@
             -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 90%);
         }
         .ambient-glow { position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(0,255,255,0.1) 0%, rgba(0,0,0,0) 65%); z-index: -1; pointer-events: none; mix-blend-mode: screen; }
-        /* Maia Purple Glow */
         .maia-glow { position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(168,85,247,0.15) 0%, rgba(0,0,0,0) 65%); z-index: -1; pointer-events: none; mix-blend-mode: screen; }
 
-        /* 4. Bento Cards (Enhanced Contrast) */
+        /* 4. Bento Cards */
         .bento-card {
             background-color: #0a0a0a; border: 1px solid #1f1f1f; border-radius: 24px; position: relative; overflow: hidden;
             transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; will-change: transform;
@@ -100,7 +101,7 @@
         .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s; }
         .dot.active { background: #00ffff; width: 30px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,255,255,0.5); }
 
-        /* 8. MODAL CHECKOUT FORM (PERBAIKAN RESPONSIF) */
+        /* 8. MODAL CHECKOUT FORM (RESPONSIF HP) */
         .modal-overlay {
             position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.3s ease;
@@ -110,10 +111,7 @@
             background: #0a0a0a; border: 1px solid #222; border-radius: 24px; width: 100%; max-w: 450px; padding: 2rem;
             transform: translateY(30px) scale(0.95); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), 0 0 40px rgba(0,255,255,0.1);
-            /* PERBAIKAN 3: Margin aman di HP, dan bisa di-scroll jika layar terlalu kecil */
-            margin: 0 16px; 
-            max-height: 90vh; 
-            overflow-y: auto; 
+            margin: 0 16px; max-height: 90vh; overflow-y: auto; 
         }
         .modal-overlay.active .modal-box { transform: translateY(0) scale(1); border-color: rgba(0,255,255,0.3); }
         
@@ -125,6 +123,11 @@
         .nav-scrolled { background: rgba(3,3,3,0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
         .wa-float { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background-color: #25D366; color: #FFF; border-radius: 50px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); z-index: 100; transition: all 0.3s ease; }
         .wa-float:hover { transform: scale(1.1); box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6); }
+        
+        /* FAQ Dropdown */
+        .faq-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+        .faq-item.is-open .faq-body { max-height: 500px; }
+        .faq-item.is-open .faq-icon { transform: rotate(180deg); color: #00ffff; }
     </style>
 </head>
 <body class="antialiased">
@@ -237,4 +240,527 @@
                         <div class="md:w-[45%] p-8 md:p-12 flex flex-col justify-center border-b md:border-b-0 md:border-r border-white/5 relative z-10">
                             <div class="text-[10px] text-madewa-cyan font-bold tracking-[0.2em] uppercase mb-4 bg-madewa-cyan/10 px-3 py-1 rounded w-max">Tour & Tourism</div>
                             <h3 class="font-display text-3xl md:text-4xl font-bold text-white mb-4">Travel Agency / Wisata Web</h3>
-                            <p class="text-madewa-textMuted text-sm leading-relaxed mb-8">Tampilkan destinasi memukau dengan galeri yang mulus. Pengunjung memilih paket wisata
+                            <p class="text-madewa-textMuted text-sm leading-relaxed mb-8">Tampilkan destinasi memukau dengan galeri yang mulus. Pengunjung memilih paket wisata di web, data dikirim ke n8n, dan Bot WA akan menagih pembayaran (DP) tanpa admin campur tangan.</p>
+                            <div class="flex flex-wrap gap-2 text-[10px] text-black font-bold">
+                                <span class="bg-white px-3 py-1.5 rounded-sm">Static Booking</span><span class="bg-white px-3 py-1.5 rounded-sm">WA Auto-Invoice</span>
+                            </div>
+                        </div>
+                        <div class="md:w-[55%] portfolio-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1000&q=80" alt="Travel Agency Website" class="portfolio-img" loading="lazy">
+                            <div class="img-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide-item bg-[#0c0c0c]">
+                    <div class="flex flex-col md:flex-row w-full h-full min-h-[450px]">
+                        <div class="md:w-[45%] p-8 md:p-12 flex flex-col justify-center border-b md:border-b-0 md:border-r border-white/5 relative z-10">
+                            <div class="text-[10px] text-madewa-cyan font-bold tracking-[0.2em] uppercase mb-4 bg-madewa-cyan/10 px-3 py-1 rounded w-max">E-Commerce Flow</div>
+                            <h3 class="font-display text-3xl md:text-4xl font-bold text-white mb-4">Marketplace Link-to-WA</h3>
+                            <p class="text-madewa-textMuted text-sm leading-relaxed mb-8">Anda punya banyak produk tapi tidak mau sistem database mahal? Kami buatkan katalog web statis. Saat tombol "Beli" diklik, keranjang belanja dirakit oleh n8n dan dilempar ke WA AI untuk Closing & QRIS.</p>
+                            <div class="flex flex-wrap gap-2 text-[10px] text-black font-bold">
+                                <span class="bg-white px-3 py-1.5 rounded-sm">No-SQL Store</span><span class="bg-white px-3 py-1.5 rounded-sm">Cart-to-WA</span><span class="bg-white px-3 py-1.5 rounded-sm">AI CS</span>
+                            </div>
+                        </div>
+                        <div class="md:w-[55%] portfolio-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1000&q=80" alt="Marketplace WA Website" class="portfolio-img" loading="lazy">
+                            <div class="img-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="slider-dots md:hidden" id="slider-dots">
+                <div class="dot active" data-index="0"></div>
+                <div class="dot" data-index="1"></div>
+                <div class="dot" data-index="2"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ekosistem" class="py-24 px-4 max-w-7xl mx-auto w-full relative z-10">
+        <div class="text-center mb-16 reveal-element">
+            <div class="inline-block bg-[#111] text-white border border-white/20 px-4 py-1.5 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase mb-4">Arsitektur Pseudo-Backend</div>
+            <h2 class="font-display text-3xl md:text-5xl font-black text-white mb-6">Bagaimana <span class="text-madewa-cyan">Sihir Ini</span> Bekerja?</h2>
+            <p class="text-madewa-textMuted text-sm md:text-base max-w-3xl mx-auto">Kami menghemat uang Anda dengan tidak membangun database SQL yang mahal. Kami menggunakan n8n sebagai "jembatan gaib" antara Website dan Bot WhatsApp Anda.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 bento-wrapper">
+            <div class="bento-card p-8 min-h-[300px] reveal-element delay-100 bg-[#080808]">
+                <div class="bento-content text-center items-center">
+                    <div class="w-16 h-16 rounded-2xl bg-[#151515] border border-white/10 flex items-center justify-center text-white mb-6 shadow-[0_0_20px_rgba(255,255,255,0.05)]">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-white mb-3">1. Web Statis (Vercel)</h3>
+                    <p class="text-madewa-textMuted text-xs md:text-sm leading-relaxed">
+                        Pengunjung melihat web yang memukau dan super cepat. Mereka mengklik tombol "Pesan" atau mengisi formulir konsultasi.
+                    </p>
+                </div>
+            </div>
+
+            <div class="bento-card p-8 min-h-[300px] reveal-element delay-200 bg-[#0a0a0a] border-madewa-cyan/30">
+                <div class="bento-content text-center items-center">
+                    <div class="w-16 h-16 rounded-2xl bg-madewa-cyan/10 border border-madewa-cyan/40 flex items-center justify-center text-madewa-cyan mb-6 shadow-[0_0_30px_rgba(0,255,255,0.15)]">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-white mb-3">2. n8n Data Routing</h3>
+                    <p class="text-madewa-textMuted text-xs md:text-sm leading-relaxed">
+                        Data formulir ditangkap oleh *Webhook* n8n. n8n secara instan menyimpannya rapi ke Google Sheets Anda, lalu mengirim sinyal "Bangun!" ke AI WhatsApp.
+                    </p>
+                </div>
+            </div>
+
+            <div class="bento-card p-8 min-h-[300px] reveal-element delay-300 bg-[#080808]">
+                <div class="bento-content text-center items-center">
+                    <div class="w-16 h-16 rounded-2xl bg-[#151515] border border-white/10 flex items-center justify-center text-white mb-6 shadow-[0_0_20px_rgba(255,255,255,0.05)]">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-white mb-3">3. Bot AI Mengambil Alih</h3>
+                    <p class="text-madewa-textMuted text-xs md:text-sm leading-relaxed">
+                        WhatsApp bisnis Anda secara otomatis me-*chat* nomor pelanggan tersebut: *"Halo Bpk. Budi, pesanan Paket Tour Bali sudah kami terima. Berikut QRIS pembayarannya..."*
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="maia" class="py-24 px-4 w-full border-y border-white/5 bg-[#050505] relative z-10">
+        <div class="absolute top-0 right-0 w-[400px] h-full bg-madewa-maia/5 blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col lg:flex-row gap-16 items-center">
+                <div class="lg:w-1/2 reveal-element">
+                    <div class="inline-flex items-center gap-2 border border-madewa-maia/30 bg-madewa-maia/10 rounded-full px-4 py-1.5 mb-6 text-[10px] font-bold text-madewa-maia tracking-widest uppercase">
+                        Sistem Penekan Biaya API
+                    </div>
+                    <h2 class="font-display text-4xl md:text-5xl font-black text-white mb-6 leading-tight">Mengenalkan <span class="text-grad-maia">Maia Router.</span></h2>
+                    <p class="text-madewa-textMuted text-sm md:text-base mb-6 leading-relaxed">
+                        Masalah terbesar AI Chatbot adalah tagihan API LLM (Claude/GPT) yang membengkak karena prospek sering mengirim pesan *spam* atau sekadar bertanya "P". 
+                    </p>
+                    <p class="text-madewa-textMuted text-sm md:text-base mb-8 leading-relaxed">
+                        Infrastruktur kami dilengkapi dengan **Maia Router**, sebuah lapis pelindung *Middleware* eksklusif. Maia bertugas menyeleksi dan menyaring pesan sampah sebelum diteruskan ke LLM utama Anda, **menghemat tagihan API Anda hingga 40% setiap bulannya.**
+                    </p>
+                    
+                    <div class="flex items-center gap-4 mt-8 pt-8 border-t border-white/10">
+                        <div class="flex-1">
+                            <h4 class="text-white font-bold text-sm mb-1">Terintegrasi dengan MCP & Skills</h4>
+                            <p class="text-[10px] text-slate-500">Model Context Protocol memungkinkan AI kami secara *real-time* menarik data stok barang langsung dari Google Drive atau CRM Anda.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:w-1/2 w-full reveal-element delay-200">
+                    <div class="bg-[#0a0a0a] rounded-3xl border border-madewa-maia/20 p-8 shadow-[0_0_40px_rgba(168,85,247,0.1)] relative overflow-hidden">
+                        <div class="absolute -right-10 -top-10 text-[10rem] text-madewa-maia/5 font-display font-black leading-none">M</div>
+                        <h4 class="text-madewa-maia font-bold text-xs uppercase tracking-widest mb-6">Alur Kerja Maia Router:</h4>
+                        
+                        <div class="space-y-4 relative">
+                            <div class="absolute left-6 top-6 bottom-6 w-0.5 bg-white/10"></div>
+                            
+                            <div class="flex gap-4 relative z-10">
+                                <div class="w-12 h-12 rounded-full bg-[#111] border border-white/20 flex items-center justify-center flex-shrink-0 text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg></div>
+                                <div>
+                                    <h5 class="text-white font-bold text-sm">Pesan Masuk (WhatsApp)</h5>
+                                    <p class="text-xs text-slate-500">"P", "Halo min", atau Spam.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-4 relative z-10">
+                                <div class="w-12 h-12 rounded-full bg-madewa-maia/20 border border-madewa-maia/50 flex items-center justify-center flex-shrink-0 text-madewa-maia shadow-[0_0_15px_rgba(168,85,247,0.3)]"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></div>
+                                <div>
+                                    <h5 class="text-madewa-maia font-bold text-sm">Maia Router Intercepts</h5>
+                                    <p class="text-xs text-slate-400">Membalas instan tanpa memanggil API Claude/GPT (Gratis).</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-4 relative z-10">
+                                <div class="w-12 h-12 rounded-full bg-madewa-cyan/10 border border-madewa-cyan/30 flex items-center justify-center flex-shrink-0 text-madewa-cyan"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg></div>
+                                <div>
+                                    <h5 class="text-white font-bold text-sm">Claude / GPT (MCP Skills)</h5>
+                                    <p class="text-xs text-slate-500">Hanya dipanggil saat klien bertanya spesifik soal produk/harga.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="komparasi" class="py-24 px-4 w-full border-y border-white/5 bg-[#030303] relative z-10">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16 reveal-element">
+                <h2 class="font-display text-3xl md:text-5xl font-black text-white mb-4">Kenapa Ini Lebih <span class="text-madewa-cyan">Menguntungkan?</span></h2>
+                <p class="text-madewa-textMuted text-sm md:text-base">Membangun Web Konvensional + Database + Bayar Admin CS vs Ekosistem Madewa.</p>
+            </div>
+
+            <div class="bg-[#0c0c0c] rounded-2xl border border-white/10 overflow-hidden shadow-2xl reveal-element delay-200">
+                <div class="grid grid-cols-12 text-[9px] md:text-xs font-bold tracking-widest uppercase text-center border-b border-white/10">
+                    <div class="col-span-4 p-4 md:p-5 text-slate-500 bg-[#111] text-left">Aspek Biaya & Operasional</div>
+                    <div class="col-span-4 p-4 md:p-5 text-madewa-alert border-l border-white/5 bg-[#1a0a0a]">Web Konvensional (Kuno)</div>
+                    <div class="col-span-4 p-4 md:p-5 text-black border-l border-white/5 bg-madewa-cyan">Ekosistem Statis + n8n Madewa</div>
+                </div>
+                
+                <div class="grid grid-cols-12 text-xs md:text-sm text-center border-b border-white/5 items-center">
+                    <div class="col-span-4 p-4 md:p-5 text-white font-medium text-left">Biaya Server Bulanan</div>
+                    <div class="col-span-4 p-4 md:p-5 text-slate-400 border-l border-white/5 bg-[#110505]">Rp 300.000 - Rp 1.000.000+ (VPS)</div>
+                    <div class="col-span-4 p-4 md:p-5 text-white font-bold bg-madewa-cyan/5 border-l border-white/5">GRATIS (Di-hosting di Vercel)</div>
+                </div>
+                
+                <div class="grid grid-cols-12 text-xs md:text-sm text-center border-b border-white/5 items-center">
+                    <div class="col-span-4 p-4 md:p-5 text-white font-medium text-left">Biaya Gaji CS / Admin WA</div>
+                    <div class="col-span-4 p-4 md:p-5 text-slate-400 border-l border-white/5 bg-[#110505]">Rp 4.000.000 / Bulan (UMR)</div>
+                    <div class="col-span-4 p-4 md:p-5 text-white font-bold bg-madewa-cyan/5 border-l border-white/5">Nol. Digantikan Bot AI Cerdas.</div>
+                </div>
+                
+                <div class="grid grid-cols-12 text-center bg-[#111] items-center">
+                    <div class="col-span-4 p-6 text-left">
+                        <span class="text-white font-bold text-sm md:text-lg">Total Pengeluaran 1 Tahun</span>
+                    </div>
+                    <div class="col-span-4 p-6 border-l border-white/5 bg-[#1a0a0a]">
+                        <span class="text-madewa-alert font-black text-sm md:text-xl">Rp 50 Juta+</span>
+                    </div>
+                    <div class="col-span-4 p-6 bg-madewa-cyan/10 border-l border-madewa-cyan/30">
+                        <span class="text-white font-display font-black text-sm md:text-xl tracking-wide">Hanya Setup Fee Sekali.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="harga" class="py-24 px-4 max-w-7xl mx-auto w-full relative z-10">
+        <div class="text-center mb-16 reveal-element">
+            <h2 class="font-display text-4xl md:text-5xl font-black text-white mb-4">Investasi Infrastruktur Digital.</h2>
+            <p class="text-madewa-textMuted text-sm md:text-base max-w-2xl mx-auto mb-6">Mulai dari Web Statis super murah, hingga bundel AI lengkap. <br/><strong class="text-white">Harga Diskon Gila ini hanya berlaku jika diamankan melalui form pemesanan hari ini.</strong></p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 bento-wrapper">
+            
+            <div class="bento-card p-6 md:p-8 flex flex-col reveal-element delay-100">
+                <div class="bento-content h-full flex flex-col">
+                    <div class="inline-block bg-[#111] text-madewa-textMuted border border-white/20 px-2 py-1 rounded text-[8px] font-bold tracking-widest uppercase mb-4 w-max">Layanan Dasar</div>
+                    <h3 class="font-display text-xl font-bold text-white mb-2">Web Statis Premium</h3>
+                    <p class="text-[11px] text-madewa-textMuted mb-6 border-b border-white/10 pb-4">Profile Company, Web Wisata, atau Katalog tanpa database.</p>
+                    <div class="mb-6">
+                        <span class="text-[9px] font-bold text-madewa-alert line-through uppercase mb-1 block">HARGA NORMAL: RP 2.500.000</span>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-3xl font-display font-black text-white">Rp 750</span>
+                            <span class="text-madewa-textMuted font-medium text-xs uppercase">Ribu</span>
+                        </div>
+                    </div>
+                    <ul class="text-[11px] text-slate-300 space-y-3 flex-grow mb-6">
+                        <li class="flex items-start gap-2"><span class="text-madewa-cyan">✦</span> Desain UI Modern (Single/Multi Page)</li>
+                        <li class="flex items-start gap-2"><span class="text-madewa-cyan">✦</span> <strong class="text-white">Online 1 Tahun Penuh</strong> di Vercel</li>
+                        <li class="flex items-start gap-2"><span class="text-madewa-cyan">✦</span> <strong class="text-white">Free 2x Revisi Minor / Bulan</strong></li>
+                        <li class="flex items-start gap-2 opacity-50"><span class="text-madewa-textMuted">✗</span> Tanpa Bot AI WhatsApp</li>
+                    </ul>
+                    <button onclick="openCheckout('Web Statis Premium', 'Rp 2.500.000', 'Rp 750.000')" class="btn-core btn-outline-cyan w-full py-3 text-[10px] uppercase font-bold tracking-widest">Ambil Diskon Web</button>
+                </div>
+            </div>
+
+            <div class="bento-card p-6 md:p-8 flex flex-col reveal-element delay-200">
+                <div class="bento-content h-full flex flex-col">
+                    <div class="inline-block bg-[#111] text-madewa-textMuted border border-white/20 px-2 py-1 rounded text-[8px] font-bold tracking-widest uppercase mb-4 w-max">Upgrade Otomasi</div>
+                    <h3 class="font-display text-xl font-bold text-white mb-2">AI WA Bot (n8n)</h3>
+                    <p class="text-[11px] text-madewa-textMuted mb-6 border-b border-white/10 pb-4">Bagi yang sudah punya web, hubungkan ke Bot AI kami.</p>
+                    <div class="mb-6">
+                        <span class="text-[9px] font-bold text-madewa-alert line-through uppercase mb-1 block">HARGA NORMAL: RP 5.000.000</span>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-3xl font-display font-black text-white">Rp 2.5</span>
+                            <span class="text-madewa-textMuted font-medium text-xs uppercase">Juta</span>
+                        </div>
+                    </div>
+                    <ul class="text-[11px] text-slate-300 space-y-3 flex-grow mb-6">
+                        <li class="flex items-start gap-2"><span class="text-madewa-cyan">✦</span> AI Agent WA (Claude/GPT) dilatih dgn Data Anda.</li>
+                        <li class="flex items-start gap-2"><span class="text-madewa-maia font-bold">✦</span> Maia Router (Hemat Biaya API s/d 40%)</li>
+                        <li class="flex items-start gap-2"><span class="text-madewa-cyan">✦</span> n8n Routing: Masuk Google Sheets/CRM.</li>
+                        <li class="flex items-start gap-2 opacity-50"><span class="text-madewa-textMuted">✗</span> Tanpa Pembuatan Website Baru.</li>
+                    </ul>
+                    <button onclick="openCheckout('AI WA Bot (n8n)', 'Rp 5.000.000', 'Rp 2.500.000')" class="btn-core btn-outline-cyan w-full py-3 text-[10px] uppercase font-bold tracking-widest">Pilih Modul AI</button>
+                </div>
+            </div>
+
+            <div class="bento-card p-6 md:p-8 flex flex-col border-madewa-cyan/60 shadow-[0_0_30px_rgba(0,255,255,0.15)] transform lg:-translate-y-4 relative reveal-element delay-300">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-madewa-cyan/20 blur-[50px] pointer-events-none"></div>
+                <div class="bento-content h-full flex flex-col">
+                    <div class="bg-madewa-cyan text-black text-[9px] font-black px-3 py-1.5 rounded uppercase tracking-[0.2em] w-max mb-4 shadow-[0_0_15px_rgba(0,255,255,0.3)]">
+                        THE ULTIMATE BUNDLE
+                    </div>
+                    <h3 class="font-display text-2xl font-bold text-white mb-2">Web + AI Flow</h3>
+                    <p class="text-[11px] text-white/80 mb-6 border-b border-white/20 pb-4">Ekosistem Sempurna. Dari klik web hingga closing WA.</p>
+                    <div class="mb-6">
+                        <span class="text-[9px] font-bold text-madewa-alert line-through uppercase mb-1 block">HARGA NORMAL: RP 7.500.000</span>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-5xl font-display font-black text-white drop-shadow-[0_0_10px_rgba(0,255,255,0.2)]">Rp 3</span>
+                            <span class="text-madewa-textMuted font-medium text-xs uppercase">Juta</span>
+                        </div>
+                    </div>
+                    <ul class="text-[11px] text-white space-y-3 flex-grow mb-6 font-medium">
+                        <li class="flex items-start gap-2"><span class="text-madewa-cyan font-bold">✓</span> Premium Static Web (Profile/Travel/Marketplace)</li>
+                        <li class="flex items-start gap-2"><span class="text-madewa-cyan font-bold">✓</span> Bot AI WhatsApp Penjualan 24/7</li>
+                        <li class="flex items-start gap-2"><span class="text-madewa-maia font-bold">✓</span> Termasuk Maia Router Anti-Spam</li>
+                        <li class="flex items-start gap-2"><span class="text-madewa-cyan font-bold">✓</span> Integrasi Web-to-WA (n8n & Sheets)</li>
+                    </ul>
+                    <button onclick="openCheckout('Web + AI Ultimate Bundle', 'Rp 7.500.000', 'Rp 3.000.000')" class="btn-core btn-solid-cyan w-full py-4 text-[11px] uppercase font-black tracking-widest shadow-lg">Ambil Ekosistem Lengkap</button>
+                </div>
+            </div>
+
+            <div class="bento-card p-6 md:p-8 flex flex-col reveal-element delay-400">
+                <div class="bento-content h-full flex flex-col">
+                    <div class="inline-block bg-[#111] text-madewa-textMuted border border-white/20 px-2 py-1 rounded text-[8px] font-bold tracking-widest uppercase mb-4 w-max">B2B Skala Besar</div>
+                    <h3 class="font-display text-xl font-bold text-white mb-2">Enterprise</h3>
+                    <p class="text-[11px] text-madewa-textMuted mb-6 border-b border-white/10 pb-4">Aplikasi SaaS Internal, Database SQL, Self-Hosted.</p>
+                    <div class="mb-6">
+                        <span class="text-[9px] font-bold text-slate-500 uppercase mb-1 block">ESTIMASI BIAYA:</span>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-3xl font-display font-black text-white">Custom</span>
+                        </div>
+                    </div>
+                    <ul class="text-[11px] text-slate-300 space-y-3 flex-grow mb-6">
+                        <li class="flex items-start gap-2"><span class="text-madewa-cyan">✦</span> Kustom Web App (React/Next.js)</li>
+                        <li class="flex items-start gap-2"><span class="text-madewa-cyan">✦</span> Database Supabase / PostgreSQL</li>
+                        <li class="flex items-start gap-2"><span class="text-madewa-cyan">✦</span> Multi-Department Automation</li>
+                    </ul>
+                    <a href="https://wa.me/6285196294622?text=Halo%20Madewa,%20kami%20perusahaan%20skala%20Enterprise.%20Ingin%20jadwalkan%20Zoom%20untuk%20kebutuhan%20Custom%20App." target="_blank" class="w-full text-center py-3 text-[10px] text-white hover:text-madewa-cyan border-b border-transparent hover:border-madewa-cyan transition-all uppercase tracking-widest font-bold">Jadwalkan Zoom</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="checkout-modal" class="modal-overlay">
+        <div class="modal-box relative">
+            <button onclick="closeCheckout()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            
+            <h3 class="font-display text-2xl font-bold text-white mb-2">Form Integrasi Sistem</h3>
+            <p class="text-xs text-madewa-textMuted mb-6">Data ini akan diteruskan ke sistem n8n kami untuk pembuatan Invoice/QRIS otomatis via WhatsApp.</p>
+            
+            <form id="checkout-form" onsubmit="submitCheckout(event)">
+                <div class="bg-madewa-cyan/10 border border-madewa-cyan/30 rounded-lg p-4 mb-6">
+                    <p class="text-[10px] text-madewa-cyan font-bold tracking-widest uppercase mb-1">Paket Terpilih:</p>
+                    <h4 id="modal-plan-name" class="text-lg font-bold text-white mb-2">Web + AI Ultimate Bundle</h4>
+                    <div class="flex items-center gap-3">
+                        <span id="modal-normal-price" class="text-xs text-slate-500 line-through">Rp 7.500.000</span>
+                        <span id="modal-promo-price" class="text-lg font-black text-madewa-cyan">Rp 3.000.000</span>
+                    </div>
+                </div>
+
+                <div class="space-y-4 mb-8">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Nama Lengkap / Perusahaan</label>
+                        <input type="text" id="cust-name" required class="input-field" placeholder="Cth: Budi Santoso / PT Maju Jaya">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Nomor WhatsApp Aktif</label>
+                        <input type="tel" id="cust-phone" required class="input-field" placeholder="Cth: 08123456789">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Email Bisnis</label>
+                        <input type="email" id="cust-email" required class="input-field" placeholder="budi@perusahaan.com">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-core btn-solid-cyan w-full py-4 text-xs font-black uppercase tracking-widest shadow-[0_0_20px_rgba(0,255,255,0.2)] flex items-center justify-center gap-2">
+                    Lanjutkan ke Pembayaran (WhatsApp)
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <section class="py-24 px-4 max-w-3xl mx-auto w-full relative z-10 reveal-element">
+        <div class="text-center mb-10">
+            <h2 class="font-display text-3xl font-black text-white mb-4">Pertanyaan Seputar Web & AI.</h2>
+        </div>
+        
+        <div class="space-y-3">
+            <div class="faq-item bg-[#0c0c0c] border border-white/10 rounded-xl overflow-hidden cursor-pointer hover:border-white/30 transition-colors">
+                <div class="p-5 flex justify-between items-center" onclick="toggleFaq(this)">
+                    <h4 class="text-white font-bold text-xs md:text-sm">Apakah sudah termasuk Domain (.com) dan Hosting website?</h4>
+                    <svg class="faq-icon w-4 h-4 text-madewa-cyan flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="faq-body">
+                    <p class="p-5 pt-0 text-slate-400 text-xs md:text-sm leading-relaxed border-t border-white/5 mt-1">Biaya Domain dan Hosting dibayarkan terpisah langsung kepada penyedia layanan (seperti Niagahoster/Vercel) yang nilainya sangat terjangkau (sekitar Rp 150.000 - Rp 300.000 per tahun). Namun, tim kami akan membantu men-setup dan mengkonfigurasi semuanya untuk Anda.</p>
+                </div>
+            </div>
+            <div class="faq-item bg-[#0c0c0c] border border-white/10 rounded-xl overflow-hidden cursor-pointer hover:border-white/30 transition-colors">
+                <div class="p-5 flex justify-between items-center" onclick="toggleFaq(this)">
+                    <h4 class="text-white font-bold text-xs md:text-sm">Bagaimana cara kerja Maia Router menekan biaya API?</h4>
+                    <svg class="faq-icon w-4 h-4 text-madewa-cyan flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="faq-body">
+                    <p class="p-5 pt-0 text-slate-400 text-xs md:text-sm leading-relaxed border-t border-white/5 mt-1">LLM premium seperti Claude Opus membebankan biaya per kata/token. Jika pelanggan mengirim chat iseng ("Halo min", "P"), LLM akan memakan biaya untuk membalasnya. Maia Router kami mencegat pesan ini dan membalasnya menggunakan sistem rule-based gratis. Claude Opus HANYA dipanggil jika pelanggan bertanya spesifik tentang produk.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="mt-16 border-t border-white/10 bg-[#020202] relative overflow-hidden">
+        <div class="absolute bottom-[-200px] left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-madewa-cyan/10 rounded-[100%] blur-[120px] pointer-events-none z-0"></div>
+
+        <div class="max-w-4xl mx-auto px-4 py-24 md:py-32 text-center relative z-10 reveal-element">
+            <h2 class="font-display text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter leading-tight">
+                Jadilah Penguasa Pasar.<br/><span class="text-madewa-textMuted">Bukan Penonton.</span>
+            </h2>
+            <p class="text-slate-400 text-sm md:text-base max-w-2xl mx-auto mb-10 font-medium leading-relaxed">
+                Platform digital yang hebat adalah investasi sekali yang membayar deviden seumur hidup. Hentikan pemborosan gaji admin. Jadwalkan panggilan dengan Lead Engineer kami hari ini.
+            </p>
+            <a href="https://wa.me/6285196294622?text=Halo%20Madewa.%20Saya%20belum%20paham%20soal%20IT.%20Bisa%20jelaskan%20bagaimana%20Web%20Statis%20dan%20AI%20bisa%20membantu%20bisnis%20saya?" target="_blank" class="btn-core btn-solid-white px-10 py-5 text-xs uppercase tracking-widest gap-3 shadow-[0_0_30px_rgba(255,255,255,0.15)]">
+                Konsultasi Pemula (Gratis)
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </a>
+        </div>
+
+        <div class="w-full py-6 border-t border-white/5 text-center text-[10px] font-mono text-slate-600 relative z-10 uppercase tracking-[0.2em]">
+            © 2026 MADEWA DIGITAL. WEB & AI INFRASTRUCTURE.
+        </div>
+    </footer>
+
+    <a href="https://wa.me/6285196294622?text=Halo%20Admin%20Madewa.%20Saya%20ingin%20tanya-tanya%20dulu%20seputar%20jasa%20pembuatan%20website%20dan%20AI." target="_blank" class="wa-float" title="Chat dengan Madewa">
+        <svg viewBox="0 0 32 32" class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16 2a13.9 13.9 0 0 0-11.9 21.2L2 30l7-2.1A13.9 13.9 0 1 0 16 2zm0 25.5c-2.3 0-4.5-.6-6.4-1.7l-.5-.3-4.8 1.4 1.5-4.6-.3-.5A11.4 11.4 0 1 1 16 27.5zM22.3 19c-.3-.2-2-.9-2.3-1-.3-.1-.6-.2-.8.2s-1 1.2-1.2 1.4c-.2.2-.4.3-.8.1s-1.4-.5-2.7-1.7c-1-1-1.7-2.1-2-2.5-.2-.3 0-.5.2-.7l.5-.6.3-.5.2-.8c-.1-.3-.4-1-.6-1.4-.2-.4-.5-.3-.7-.3h-.6c-.2 0-.6.1-.9.4s-1.2 1.2-1.2 2.8 1.2 3.1 1.4 3.4c.2.2 2.3 3.6 5.6 5.1 2.3 1 3.2 1.1 4.4 1s2-.8 2.3-1.6.3-1.5.2-1.6c-.1-.2-.4-.3-.8-.5z"/></svg>
+    </a>
+
+    <script>
+        document.body.classList.add('js-enabled');
+
+        document.addEventListener("DOMContentLoaded", function() {
+
+            function initTimer() {
+                const timerEl = document.getElementById('countdown-timer');
+                if(!timerEl) return;
+                let endTime = sessionStorage.getItem('madewaUrgency');
+                if (!endTime) {
+                    const now = new Date();
+                    now.setHours(now.getHours() + 2);
+                    now.setMinutes(now.getMinutes() + 14);
+                    endTime = now.getTime();
+                    sessionStorage.setItem('madewaUrgency', endTime);
+                }
+                const timerInterval = setInterval(function() {
+                    const distance = endTime - new Date().getTime();
+                    if (distance < 0) {
+                        clearInterval(timerInterval);
+                        timerEl.innerHTML = "WAKTU HABIS";
+                        return;
+                    }
+                    const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const s = Math.floor((distance % (1000 * 60)) / 1000);
+                    timerEl.innerHTML = (h < 10 ? "0"+h : h) + ":" + (m < 10 ? "0"+m : m) + ":" + (s < 10 ? "0"+s : s);
+                }, 1000);
+            }
+            initTimer();
+
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+
+            document.querySelectorAll('.reveal-element').forEach(el => {
+                if(el.getBoundingClientRect().top < window.innerHeight) {
+                    setTimeout(() => { el.classList.add('is-visible'); }, 50);
+                } else {
+                    observer.observe(el);
+                }
+            });
+
+            const nav = document.getElementById('main-nav');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) nav.classList.add('nav-scrolled');
+                else nav.classList.remove('nav-scrolled');
+            }, { passive: true });
+
+            const track = document.getElementById('slider-track');
+            const slides = document.querySelectorAll('.slide-item');
+            const btnNext = document.getElementById('btn-next');
+            const btnPrev = document.getElementById('btn-prev');
+            const dots = document.querySelectorAll('.dot');
+            
+            let currentIndex = 0;
+            const slideCount = slides.length;
+
+            function updateSlider(index) {
+                if (index >= slideCount) currentIndex = 0;
+                else if (index < 0) currentIndex = slideCount - 1;
+                else currentIndex = index;
+
+                track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                dots.forEach((dot, i) => {
+                    if(i === currentIndex) dot.classList.add('active');
+                    else dot.classList.remove('active');
+                });
+            }
+
+            if(btnNext && btnPrev) {
+                btnNext.addEventListener('click', () => updateSlider(currentIndex + 1));
+                btnPrev.addEventListener('click', () => updateSlider(currentIndex - 1));
+            }
+            dots.forEach(dot => {
+                dot.addEventListener('click', (e) => updateSlider(parseInt(e.target.dataset.index)));
+            });
+
+            let startX = 0, endX = 0;
+            track.addEventListener('touchstart', e => { startX = e.changedTouches[0].screenX; }, {passive: true});
+            track.addEventListener('touchend', e => {
+                endX = e.changedTouches[0].screenX;
+                if (startX - endX > 50) updateSlider(currentIndex + 1);
+                if (endX - startX > 50) updateSlider(currentIndex - 1);
+            }, {passive: true});
+        });
+
+        // MODAL CHECKOUT
+        let selectedPlan = "";
+        let selectedPromo = "";
+        let selectedNormal = "";
+
+        window.openCheckout = function(planName, normalPrice, promoPrice) {
+            selectedPlan = planName;
+            selectedNormal = normalPrice;
+            selectedPromo = promoPrice;
+
+            document.getElementById('modal-plan-name').innerText = planName;
+            document.getElementById('modal-normal-price').innerText = normalPrice;
+            document.getElementById('modal-promo-price').innerText = promoPrice;
+
+            document.getElementById('checkout-modal').classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+        };
+
+        window.closeCheckout = function() {
+            document.getElementById('checkout-modal').classList.remove('active');
+            document.body.style.overflow = 'auto'; 
+        };
+
+        window.submitCheckout = function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const email = document.getElementById('cust-email').value;
+
+            const text = `Halo Tim Madewa Digital, saya ingin memesan layanan dengan detail berikut:%0A%0A*📄 DATA PELANGGAN*%0A- Nama: ${name}%0A- No. WA: ${phone}%0A- Email: ${email}%0A%0A*🛒 DETAIL PESANAN*%0A- Paket: ${selectedPlan}%0A- Harga Promo: *${selectedPromo}*%0A- (Harga Normal: ~${selectedNormal}~)%0A%0AMohon panduan untuk pembayaran (Invoice/QRIS) dan langkah selanjutnya. Terima kasih.`;
+            
+            const waNumber = "6285196294622";
+            const waUrl = `https://wa.me/${waNumber}?text=${text}`;
+            
+            window.open(waUrl, '_blank');
+            closeCheckout();
+        };
+
+        window.toggleFaq = function(el) {
+            const parent = el.parentElement;
+            document.querySelectorAll('.faq-item').forEach(item => {
+                if(item !== parent) item.classList.remove('is-open');
+            });
+            parent.classList.toggle('is-open');
+        };
+
+    </script>
+</body>
+</html>
